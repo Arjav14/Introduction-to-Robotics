@@ -79,3 +79,39 @@ function makeTableResponsive() {
 // Run on load and resize
 makeTableResponsive();
 window.addEventListener('resize', makeTableResponsive);
+document.addEventListener('DOMContentLoaded', function() {
+    // Create overlay element
+    const overlay = document.createElement('div');
+    overlay.className = 'image-overlay';
+    overlay.innerHTML = '<span class="close-overlay">&times;</span><img src="" alt="Enlarged view">';
+    document.body.appendChild(overlay);
+
+    // Handle image clicks
+    document.querySelectorAll('.classification-cell img').forEach(img => {
+        img.addEventListener('click', function() {
+            const overlayImg = overlay.querySelector('img');
+            overlayImg.src = this.src;
+            overlayImg.alt = this.alt + ' (enlarged)';
+            overlay.classList.add('active');
+        });
+    });
+
+    // Close overlay
+    overlay.querySelector('.close-overlay').addEventListener('click', function() {
+        overlay.classList.remove('active');
+    });
+
+    // Close when clicking outside image
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            overlay.classList.remove('active');
+        }
+    });
+
+    // Close with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            overlay.classList.remove('active');
+        }
+    });
+});
